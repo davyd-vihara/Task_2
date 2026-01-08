@@ -1,7 +1,7 @@
 import pytest
 import requests
 import uuid
-from constants import BASE_URL
+from constants import BASE_URL, ENDPOINT_AUTH_REGISTER, ENDPOINT_AUTH_USER, ENDPOINT_INGREDIENTS
 
 
 @pytest.fixture
@@ -24,7 +24,7 @@ def create_user_data():
 @pytest.fixture
 def registered_user(base_url, create_user_data):
     """Создает зарегистрированного пользователя и возвращает его данные"""
-    register_url = f"{base_url}/auth/register"
+    register_url = f"{base_url}{ENDPOINT_AUTH_REGISTER}"
     response = requests.post(register_url, json=create_user_data)
     
     data = response.json()
@@ -44,7 +44,7 @@ def registered_user(base_url, create_user_data):
     
     # Удаление пользователя после теста
     try:
-        delete_url = f"{base_url}/auth/user"
+        delete_url = f"{base_url}{ENDPOINT_AUTH_USER}"
         headers = {"Authorization": access_token}
         requests.delete(delete_url, headers=headers)
     except Exception:
@@ -60,7 +60,7 @@ def auth_headers(registered_user):
 @pytest.fixture
 def get_ingredients(base_url):
     """Получает список ингредиентов для тестов"""
-    ingredients_url = f"{base_url}/ingredients"
+    ingredients_url = f"{base_url}{ENDPOINT_INGREDIENTS}"
     response = requests.get(ingredients_url)
     data = response.json()
     # API может вернуть массив напрямую или объект с полем data
