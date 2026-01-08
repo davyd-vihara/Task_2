@@ -1,4 +1,4 @@
-﻿# Python
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
@@ -32,18 +32,11 @@ env/
 *.swo
 *~
 
-# Testing
-.pytest_cache/
-.coverage
-htmlcov/
-
-# Environment variables
-.env
-.env.local
-
-# Logs
-*.log
+# Allure
 
 # OS
 .DS_Store
 Thumbs.db
+
+
+
