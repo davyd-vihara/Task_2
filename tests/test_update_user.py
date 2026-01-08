@@ -63,14 +63,27 @@ class TestUpdateUser:
         data = response.json()
         assert data["success"] is True, "Поле success должно быть True"
         assert "user" in data, "В ответе должно быть поле user"
+    
+    @allure.title("Логин с обновленным паролем после изменения password")
+    def test_login_with_updated_password(self, base_url, registered_user, auth_headers):
+        """Тест логина с обновленным паролем для проверки, что пароль действительно изменился"""
+        update_url = f"{base_url}{ENDPOINT_AUTH_USER}"
+        new_password = "new_password123"
+        update_data = {
+            "password": new_password
+        }
         
-        with allure.step("Проверить, что пароль действительно изменился через логин"):
+        with allure.step("Отправить запрос на изменение password"):
+            requests.patch(update_url, json=update_data, headers=auth_headers)
+        
+        with allure.step("Отправить запрос на логин с новым паролем"):
             login_url = f"{base_url}{ENDPOINT_AUTH_LOGIN}"
             login_data = {
                 "email": registered_user["email"],
                 "password": new_password
             }
             login_response = requests.post(login_url, json=login_data)
+        
         assert login_response.status_code == 200, "Логин с новым паролем должен быть успешным"
         login_data_response = login_response.json()
         assert login_data_response["success"] is True, "Логин должен быть успешным"
